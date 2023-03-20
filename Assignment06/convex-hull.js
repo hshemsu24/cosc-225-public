@@ -118,6 +118,35 @@ function ConvexHullViewer (svg, ps) {
     this.svg = svg;  // a n svg object where the visualization is drawn
     this.ps = ps;    // a point set of the points to be visualized
 
+    this.svg.addEventListener("click", (e) => {
+        // create a new vertex
+        this.createPoint(e);
+    });
+
+    this.createPoint = function (e) {
+        const rect = this.svg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const pt = ps.addNewPoint(x, y);
+        this.addPoint(pt);
+        this.ps.addPoint(vtx);
+        }
+
+        this.addPoint = function (pt) {
+            const elt = document.createElementNS(SVG_NS, "circle");
+            elt.classList.add("points");
+            elt.setAttributeNS(null, "cx", pt.x);
+            elt.setAttributeNS(null, "cy", pt.y);
+        
+            elt.addEventListener("click", (e) => {
+                e.stopPropagation(); // don't create another vertex (i.e., call event listener for the svg element in addition to the vertex
+            });
+        
+            this.vertexGroup.appendChild(elt);
+            this.vertexElts[vtx.id] = elt;
+            }
+    
+
     // COMPLETE THIS OBJECT
 }
 
@@ -131,6 +160,7 @@ function ConvexHull (ps, viewer) {
     // start a visualization of the Graham scan algorithm performed on ps
     this.start = function () {
 	
+
 	// COMPLETE THIS METHOD
 	
     }
@@ -151,7 +181,43 @@ function ConvexHull (ps, viewer) {
     // ties by minimum y-value.
     this.getConvexHull = function () {
 
+        convexSet = [];
+        ps.sort;
+
+
+        for(i = 0; i< ps.size; i++){
+            while(ps.size >= 2 && 
+                orientation(convexSet[convexSet.length-2], convexSet[convexSet.length-1], ps[i]) != 1){
+
+                convexSet.pop();
+            }
+            convexSet.push(ps[i]);   
+        }
+
+        ps.reverse;
+
+        for(i = 1; i< ps.size; i++){
+            while(ps.size >= 2 && 
+                orientation(convexSet[convexSet.length-2], convexSet[convexSet.length-1], ps[i]) != 1){
+
+                convexSet.pop();
+            }
+                convexSet.push(ps[i]); 
+        }
+
+
+
 	// COMPLETE THIS METHOD
 	
+    }
+
+    function orientation(a, b, c){
+        
+        if ((c.y - b.y)(b.x-a.x)-(b.y-a.y)(c.x-b.x) > 0){
+            return 1;
+        } 
+
+        return 0;
+        
     }
 }

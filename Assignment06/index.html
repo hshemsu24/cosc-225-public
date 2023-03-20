@@ -10,10 +10,13 @@
   </head>
   <body>
     <div id="root">
-      <h1>Title Your Page</h1>
-      <p>Make a description here</p>
+      <h1>Animated Convex Hull</h1>
+      <p>Click on the box below to add points!</p>
       <svg id="convex-hull-box" xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+        <rect width="100%" height="100%" fill="gray"/>
       </svg>
+      <button onclick="ch.start()">Start Convex Hull</button> <button onclick="ch.step()">Step</button> <button onclick="ch.animate()">Animate Convex Hull</button>
+      <p id="graph-text-box"></p>
     </div>
   </body>
 </html>

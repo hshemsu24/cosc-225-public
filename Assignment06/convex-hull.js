@@ -179,36 +179,57 @@ function ConvexHull (ps, viewer) {
     // the returned PointSet should be the vertices of the convex hull
     // in clockwise order, starting from the left-most point, breaking
     // ties by minimum y-value.
+   
+
     this.getConvexHull = function () {
+        len = this.ps.size();
+        
+        console.log(len);
 
-        convexSet = [];
-        ps.sort;
+        convexSetTop = [];
+        this.ps.sort();
+        chLenTop = convexSetTop.length;
 
+        for(i = 0; i< len; i++){
+            while(chLenTop >= 2 && 
+                orientation(convexSetTop[convexSetTop.length-2], convexSetTop[convexSetTop.length-1], this.ps.points[i]) != 1){
 
-        for(i = 0; i< ps.size; i++){
-            while(ps.size >= 2 && 
-                orientation(convexSet[convexSet.length-2], convexSet[convexSet.length-1], ps[i]) != 1){
-
-                convexSet.pop();
+                convexSetTop.pop();
             }
-            convexSet.push(ps[i]);   
+            convexSetTop.push(this.ps.points[i]);   
         }
 
-        ps.reverse;
+        this.ps.reverse();
 
-        for(i = 1; i< ps.size; i++){
-            while(ps.size >= 2 && 
-                orientation(convexSet[convexSet.length-2], convexSet[convexSet.length-1], ps[i]) != 1){
+        convexSetBot = [];
+        chLenBot = convexSetBot.length;
 
-                convexSet.pop();
+        for(i = 1; i< len; i++){
+            while(chLenBot >= 2 && 
+                orientation(convexSetBot[convexSetBot.length-2], convexSetBot[convexSetBot.length-1], this.ps.points[i]) != 1){
+
+                convexSetBot.pop();
             }
-                convexSet.push(ps[i]); 
+                convexSetBot.push(this.ps.points[i]); 
         }
-
-
+       
 
 	// COMPLETE THIS METHOD
-	
+        chSet = new PointSet();
+
+
+        for(i = 0; i< convexSetTop.length; i++){
+            chSet.addNewPoint(convexSetTop[i].x, convexSetTop[i].y);
+        }
+        for(i = 0; i< convexSetBot.length; i++){
+            chSet.addNewPoint(convexSetBot[i].x, convexSetBot[i].y);
+        }
+
+
+
+        return chSet;
+        
+        
     }
 
     function orientation(a, b, c){
@@ -221,3 +242,10 @@ function ConvexHull (ps, viewer) {
         
     }
 }
+
+try {
+    exports.PointSet = PointSet;
+    exports.ConvexHull = ConvexHull;
+  } catch (e) {
+    console.log("not running in Node");
+  }

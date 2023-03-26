@@ -43,6 +43,7 @@ function Point (x, y, id) {
     }
 }
 
+
 // An object that represents a set of Points in the plane. The `sort`
 // function sorts the points according to the `Point.compareTo`
 // function. The `reverse` function reverses the order of the
@@ -117,11 +118,20 @@ function PointSet () {
 function ConvexHullViewer (svg, ps) {
     this.svg = svg;  // a n svg object where the visualization is drawn
     this.ps = ps;    // a point set of the points to be visualized
+    // create svg group for displaying vertices
+    this.pointGroup = document.createElementNS(SVG_NS, "g");
+    this.pointGroup.id = "graph-" + ps.id + "-vertices";
+    this.svg.appendChild(this.pointGroup);
+
+
+   
 
     this.svg.addEventListener("click", (e) => {
         // create a new vertex
         this.createPoint(e);
     });
+
+    this.pointElts = [];   // svg elements for pointa
 
     this.createPoint = function (e) {
         const rect = this.svg.getBoundingClientRect();
@@ -142,15 +152,24 @@ function ConvexHullViewer (svg, ps) {
                 e.stopPropagation(); // don't create another vertex (i.e., call event listener for the svg element in addition to the vertex
             });
         
-            this.vertexGroup.appendChild(elt);
-            this.vertexElts[vtx.id] = elt;
+            this.pointGroup.appendChild (elt);
+            this.pointElts[pt.id] = elt;
             }
     
 
     // COMPLETE THIS OBJECT
 }
 
-/*
+
+// ps = new PointSet() ;
+// ps.addNewPoint(2,1) ;
+// ps.addNewPoint(1,2) ;
+// ps.addNewPoint(1,0) ;
+// ps.addNewPoint(0,1) ; 
+// let ch = new ConvexHull(ps, null);
+// ch.getConvexHull();
+	
+  /*
  * An object representing an instance of the convex hull problem. A ConvexHull stores a PointSet ps that stores the input points, and a ConvexHullViewer viewer that displays interactions between the ConvexHull computation and the 
  */
 function ConvexHull (ps, viewer) {
@@ -184,30 +203,26 @@ function ConvexHull (ps, viewer) {
     this.getConvexHull = function () {
         len = this.ps.size();
         
-        console.log(len);
-
         convexSetTop = [];
         this.ps.sort();
-        chLenTop = convexSetTop.length;
 
         for(i = 0; i< len; i++){
-            while(chLenTop >= 2 && 
-                orientation(convexSetTop[convexSetTop.length-2], convexSetTop[convexSetTop.length-1], this.ps.points[i]) != 1){
+            while(convexSetTop.length >= 2 && 
+                orientation(convexSetTop[convexSetTop.length-2], convexSetTop[convexSetTop.length-1], this.ps.points[i]) == 1){
 
                 convexSetTop.pop();
             }
-            convexSetTop.push(this.ps.points[i]);   
+            convexSetTop.push(this.ps.points[i]);  
         }
 
         this.ps.reverse();
 
         convexSetBot = [];
-        chLenBot = convexSetBot.length;
 
-        for(i = 1; i< len; i++){
-            while(chLenBot >= 2 && 
-                orientation(convexSetBot[convexSetBot.length-2], convexSetBot[convexSetBot.length-1], this.ps.points[i]) != 1){
+        for(i = 0; i< len; i++){
 
+            while(convexSetBot.length >= 2 && 
+                orientation(convexSetBot[convexSetBot.length-2], convexSetBot[convexSetBot.length-1], this.ps.points[i]) == 1){
                 convexSetBot.pop();
             }
                 convexSetBot.push(this.ps.points[i]); 
@@ -221,11 +236,12 @@ function ConvexHull (ps, viewer) {
         for(i = 0; i< convexSetTop.length; i++){
             chSet.addNewPoint(convexSetTop[i].x, convexSetTop[i].y);
         }
-        for(i = 0; i< convexSetBot.length; i++){
+        
+    //    chSet.addNewPoint(808,808);
+       
+        for(i = 1; i< convexSetBot.length; i++){
             chSet.addNewPoint(convexSetBot[i].x, convexSetBot[i].y);
         }
-
-
 
         return chSet;
         
@@ -233,15 +249,24 @@ function ConvexHull (ps, viewer) {
     }
 
     function orientation(a, b, c){
-        
-        if ((c.y - b.y)(b.x-a.x)-(b.y-a.y)(c.x-b.x) > 0){
+    
+        if ((c.y - b.y)*(b.x-a.x)-(b.y-a.y)*(c.x-b.x) >= 0){
             return 1;
-        } 
-
-        return 0;
-        
+        } else {
+            return 0;
+        }
     }
 }
+
+const svg = document.querySelector("#convex-hull-box");
+//const text = document.querySelector("#graph-text-box");
+const ps = new PointSet();
+const chv = new ConvexHullViewer(svg, ps)
+//const dfs = new Dfs(graph, gv);
+
+
+
+
 
 try {
     exports.PointSet = PointSet;

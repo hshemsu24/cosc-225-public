@@ -1,4 +1,7 @@
-/* Add Your Styles Here! */
+.bgcolor{
+    background-color:white ;
+    margin:auto; 
+}
 
 #root{
 text-align: center;
@@ -7,7 +10,7 @@ text-align: center;
 #convex-hull-box{
     width: 600;
     height: 400;
-    fill: white;
+    fill: white !important ;
     border: 1px solid black;
 
 }

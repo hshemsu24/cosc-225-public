@@ -4,6 +4,15 @@
 text-align: center;
 }
 
+#convex-hull-box{
+    width: 600;
+    height: 400;
+    fill: white;
+    border: 1px solid black;
+
+}
+
+
 svg {
     margin: auto;
     position: relative;

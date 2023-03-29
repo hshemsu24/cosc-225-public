@@ -1,10 +1,11 @@
 .bgcolor{
-    background-color: rgba(154, 215, 208, 0.613) ;
+    background: radial-gradient(rgb(0, 255, 238), rgb(222, 147, 225));
     margin:auto; 
 }
 
 #root{
 text-align: center;
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 #convex-hull-box{
@@ -22,19 +23,15 @@ svg{
     background-color: white !important;
 }
 
+button {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
-.edge {
-    stroke: black;
-    stroke-width: 4px;
+}
+button:hover {
+    background-color: pink;
+    font-family: inherit;
 }
 
-.muted {
-    stroke: rgb(200,200,200);
+button:active {
+    background-color: aqua;
 }
-
-.highlight {
-    stroke: red;
-    stroke-width: 5;
-}
-
-
